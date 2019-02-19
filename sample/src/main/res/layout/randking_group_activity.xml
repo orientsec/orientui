@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <com.dfzq.winner.kquotation.widget.pinnedview.PinnedHeaderRecyclerView
+        android:id="@+id/recycler_view_left"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+
+    <com.dfzq.winner.kquotation.widget.RankingHorizontalScrollView
+        android:id="@+id/horizontal_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <com.dfzq.winner.kquotation.widget.pinnedview.PinnedHeaderRecyclerView
+            android:id="@+id/recycler_view_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </com.dfzq.winner.kquotation.widget.RankingHorizontalScrollView>
+</LinearLayout>
