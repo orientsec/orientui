@@ -1,1 +1,1 @@
-include ':sample', ':rankinggroup', ':pinnedrecyclerview', ':loadlayout'
+include ':sample', ':RankingGroup', ':PinnedRecyclerView', ':LoadLayout'

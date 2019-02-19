@@ -8,9 +8,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/loadlayout" />
-            <option value="$PROJECT_DIR$/pinnedrecyclerview" />
-            <option value="$PROJECT_DIR$/rankinggroup" />
+            <option value="$PROJECT_DIR$/LoadLayout" />
+            <option value="$PROJECT_DIR$/PinnedRecyclerView" />
+            <option value="$PROJECT_DIR$/RankingGroup" />
             <option value="$PROJECT_DIR$/sample" />
           </set>
         </option>
