@@ -1,4 +1,4 @@
-package com.mobile.orientui.rankinggroup
+package com.mobile.orientui
 
 import android.content.Context
 import android.util.AttributeSet

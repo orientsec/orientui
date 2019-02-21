@@ -1,4 +1,4 @@
-package com.mobile.orientui.loadlayout;
+package com.mobile.orientui;
 
 import org.junit.Test;
 

@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mobile.orientui.*
 import com.mobile.orientui.R
-import com.mobile.orientui.pinnedrecyclerview.divider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.pinned_rv_activity.*
 
 class PinnedRVActivity : AppCompatActivity() {
@@ -38,7 +36,7 @@ class PinnedRVActivity : AppCompatActivity() {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
-            addItemDecoration(HorizontalDividerItemDecoration.Builder(context)
+            addItemDecoration(com.mobile.orientui.divider.HorizontalDividerItemDecoration.Builder(context)
                     .margin(15, 15)
                     .size(1)
                     .color(Color.parseColor("#c4c4c4"))
@@ -47,7 +45,7 @@ class PinnedRVActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        var list = listOf<TestItem>(HeadItem(""))
+        var list = listOf<RankingBaseItemModel>(HeadItem(""))
 
         for (i in 0 until 20) {
             list += listOf(BodyItem())
@@ -59,7 +57,7 @@ class PinnedRVActivity : AppCompatActivity() {
 }
 
 class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), PinnedHeaderCallBack {
-    internal var itemList = mutableListOf<TestItem>()
+    internal var itemList = mutableListOf<RankingBaseItemModel>()
         private set
 
     override fun getItemViewType(position: Int): Int {
@@ -86,7 +84,7 @@ class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), PinnedHe
     override fun getItemCount(): Int = itemList.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal fun bindView(item: TestItem) {
+        internal fun bindView(item: RankingBaseItemModel) {
 
         }
     }
@@ -94,8 +92,8 @@ class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), PinnedHe
     /**
      * 设置数据
      */
-    internal fun setupItemList(list: List<TestItem>) {
-        itemList = list as MutableList<TestItem>
+    internal fun setupItemList(list: List<RankingBaseItemModel>) {
+        itemList = list as MutableList<RankingBaseItemModel>
         notifyDataSetChanged()
     }
 }

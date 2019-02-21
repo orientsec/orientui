@@ -1,4 +1,4 @@
-package com.mobile.orientui.pinnedrecyclerview.divider;
+package com.mobile.orientui.divider;
 
 import android.content.Context;
 import android.content.res.Resources;

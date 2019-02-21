@@ -1,4 +1,4 @@
-package com.mobile.orientui.pinnedrecyclerview
+package com.mobile.orientui
 
 /**
  * 用于定义Adapter的item类型

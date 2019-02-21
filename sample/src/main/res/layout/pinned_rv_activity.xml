@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
 
-    <com.mobile.orientui.pinnedrecyclerview.PinnedHeaderRecyclerView
+    <com.mobile.orientui.PinnedHeaderRecyclerView
         android:id="@+id/pinned_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

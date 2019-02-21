@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.mobile.orientui.PinnedHeaderRecyclerView
+        android:id="@+id/recycler_view_left"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+
+    <com.mobile.orientui.RankingHorizontalScrollView
+        android:id="@+id/horizontal_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <com.mobile.orientui.PinnedHeaderRecyclerView
+            android:id="@+id/recycler_view_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </com.mobile.orientui.RankingHorizontalScrollView>
+</LinearLayout>

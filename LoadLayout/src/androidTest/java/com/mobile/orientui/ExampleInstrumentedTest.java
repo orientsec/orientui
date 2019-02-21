@@ -1,4 +1,4 @@
-package com.mobile.orientui.loadlayout;
+package com.mobile.orientui;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
