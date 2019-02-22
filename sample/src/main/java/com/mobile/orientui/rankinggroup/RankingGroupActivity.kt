@@ -66,7 +66,7 @@ class RankingGroupActivity : AppCompatActivity() {
 
         }
 
-        override fun loadMoreList() {
+        override fun loadMoreList(totalItemCount: Int) {
 
         }
     }

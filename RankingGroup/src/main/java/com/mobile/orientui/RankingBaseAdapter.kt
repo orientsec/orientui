@@ -6,8 +6,8 @@ import java.util.ArrayList
 /**
  * 行情列表base adapter
  */
-abstract class RankingBaseAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>(), PinnedHeaderCallBack {
-    var itemList = mutableListOf<RankingBaseItemModel>()
+abstract class RankingBaseAdapter<VH : RecyclerView.ViewHolder>(head: RankingBaseItemModel = RankingBaseItemModel(HEAD_ITEM)) : RecyclerView.Adapter<VH>(), PinnedHeaderCallBack {
+    var itemList = mutableListOf(head)
         private set
 
     //头部item标题点击事件
