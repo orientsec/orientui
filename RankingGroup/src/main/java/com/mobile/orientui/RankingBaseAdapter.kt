@@ -1,8 +1,5 @@
 package com.mobile.orientui
 
-import android.graphics.Color
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.util.ArrayList
 
@@ -12,9 +9,9 @@ import java.util.ArrayList
 abstract class RankingBaseAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>(), PinnedHeaderCallBack {
     var itemList = mutableListOf<RankingBaseItemModel>()
         private set
-
+/*
     //头部item标题点击事件
-    internal lateinit var titleClickListener: () -> Unit
+    internal lateinit var titleClickListener: () -> Unit*/
 
     override fun getItemViewType(position: Int): Int {
         return if (itemList.size > 0) (itemList[position]).itemType else NO_DATA_ITEM
@@ -28,6 +25,10 @@ abstract class RankingBaseAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.A
     //最新数据列表
     internal var latestCodeList: List<RankingBaseItemModel> = emptyList()
 
+    /**
+     * 刷新列表数据
+     * @param startPosition: 列表刷新的起始位置，绝对位置
+     */
     fun updateItems(startPosition: Int, items: List<RankingBaseItemModel>, first: Int, visible: Int) {
         if (items.isNotEmpty()) {
             val list = if (itemCount > startPosition + items.size)
@@ -42,6 +43,10 @@ abstract class RankingBaseAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.A
         }
     }
 
+    /**
+     * 上拉加载
+     * 添加数据，刷新列表
+     */
     fun insertItems(items: List<RankingBaseItemModel>) {
         if (items.isNotEmpty()) {
             val startPosition = itemList.size

@@ -1,5 +1,6 @@
 package com.mobile.orientui.rankinggroup
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.mobile.orientui.*
 import com.mobile.orientui.R
+import com.mobile.orientui.divider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.randking_group_activity.*
 
 class RankingGroupActivity : AppCompatActivity() {
@@ -34,12 +36,17 @@ class RankingGroupActivity : AppCompatActivity() {
     private fun initView() {
         rankingGV.apply {
             setAdapter(mLeftAdapter, mRightAdapter)
+            addItemDecoration(HorizontalDividerItemDecoration.Builder(context)
+                    .margin(15, 15)
+                    .size(1)
+                    .color(Color.parseColor("#c4c4c4"))
+                    .build())
             mScrollCallback = scrollCallback
         }
     }
 
     private fun initData() {
-        var list = listOf<RankingBaseItemModel>(HeadItem(""))
+        var list = listOf<RankingBaseItemModel>(HeadItem())
 
         for (i in 0 until 50) {
             list += listOf(BodyItem())

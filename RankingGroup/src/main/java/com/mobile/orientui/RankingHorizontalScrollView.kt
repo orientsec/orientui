@@ -13,14 +13,11 @@ class RankingHorizontalScrollView(context: Context, attrs: AttributeSet) : Horiz
     private var lastX: Int = 0
     private var lastY: Int = 0
 
-    private lateinit var mScrollListener: HorizontalScrollStateListener
     /**
      * 控制顶层RecyclerView和子RecyclerView的touch事件顺序
      * 顶层RecyclerView处理垂直事件
      * 子RecyclerView处理横向事件
      */
-
-
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         var intercept = false
         val x = ev.x.toInt()
@@ -43,9 +40,5 @@ class RankingHorizontalScrollView(context: Context, attrs: AttributeSet) : Horiz
         lastX = x
         lastY = y
         return intercept
-    }
-
-    interface HorizontalScrollStateListener {
-        fun onScrollStateChanged(newState: Int)
     }
 }

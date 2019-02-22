@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobile.orientui.*
 import com.mobile.orientui.R
 import kotlinx.android.synthetic.main.pinned_rv_activity.*
+import com.mobile.orientui.divider.HorizontalDividerItemDecoration
 
 class PinnedRVActivity : AppCompatActivity() {
 
@@ -36,7 +37,7 @@ class PinnedRVActivity : AppCompatActivity() {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
-            addItemDecoration(com.mobile.orientui.divider.HorizontalDividerItemDecoration.Builder(context)
+            addItemDecoration(HorizontalDividerItemDecoration.Builder(context)
                     .margin(15, 15)
                     .size(1)
                     .color(Color.parseColor("#c4c4c4"))
@@ -45,7 +46,7 @@ class PinnedRVActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        var list = listOf<RankingBaseItemModel>(HeadItem(""))
+        var list = listOf<RankingBaseItemModel>(HeadItem())
 
         for (i in 0 until 20) {
             list += listOf(BodyItem())

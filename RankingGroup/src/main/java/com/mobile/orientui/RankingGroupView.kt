@@ -2,24 +2,16 @@ package com.mobile.orientui
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mobile.orientui.divider.HorizontalDividerItemDecoration
 import com.mobile.orientui.rankinggroup.R
 import kotlinx.android.synthetic.main.ranking_group_layout.view.*
-import java.util.ArrayList
 
 class RankingGroupView : FrameLayout {
-/*    var leftAdapter=SampleAdapter()
-    var rightAdapter=SampleAdapter()*/
 
     lateinit var mScrollCallback: OnScrollCallback
     /**
@@ -56,28 +48,28 @@ class RankingGroupView : FrameLayout {
 
     private fun initView(context: Context) {
         View.inflate(context, R.layout.ranking_group_layout, this)
-
+        val horizontalViewSynchronize = RecyclerViewSynchronize()
+        horizontalViewSynchronize.attach(recycler_view_left, recycler_view_right, scrollListener)
     }
 
-    fun setAdapter(leftAdapter: RecyclerView.Adapter<*>,rightAdapter: RecyclerView.Adapter<*>) {
+    fun setAdapter(leftAdapter: RecyclerView.Adapter<*>, rightAdapter: RecyclerView.Adapter<*>) {
         recycler_view_left.apply {
             adapter = leftAdapter
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(HorizontalDividerItemDecoration.Builder(context)
-                    .color(Color.parseColor("#BFBFBF"))
-                    .size(1)
-                    .build())
         }
         recycler_view_right.apply {
             adapter = rightAdapter
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(HorizontalDividerItemDecoration.Builder(context)
-                    .color(Color.parseColor("#BFBFBF"))
-                    .size(1)
-                    .build())
         }
-        val horizontalViewSynchronize = RecyclerViewSynchronize()
-        horizontalViewSynchronize.attach(recycler_view_left, recycler_view_right, scrollListener)
+    }
+
+    fun addItemDecoration(decor: RecyclerView.ItemDecoration){
+        recycler_view_left.apply {
+            addItemDecoration(decor)
+        }
+        recycler_view_right.apply {
+            addItemDecoration(decor)
+        }
     }
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
