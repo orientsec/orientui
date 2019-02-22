@@ -12,8 +12,6 @@ import com.mobile.orientui.rankinggroup.R
 import kotlinx.android.synthetic.main.ranking_group_layout.view.*
 
 class RankingGroupView : FrameLayout {
-    //头部item标题点击事件
-    lateinit var titleClickListener: (Any) -> Unit
 
     lateinit var mScrollCallback: OnScrollCallback
     /**
@@ -27,10 +25,6 @@ class RankingGroupView : FrameLayout {
 
     private var maxRefreshCount:Int=20
     private var cacheCount:Int=1
-/*    companion object {
-        const val MAX_REFRESH_COUNT = 20
-        const val CACHE_COUNT = 1
-    }*/
 
     constructor(context: Context) : this(context, null)
 

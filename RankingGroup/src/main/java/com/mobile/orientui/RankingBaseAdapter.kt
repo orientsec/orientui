@@ -9,9 +9,9 @@ import java.util.ArrayList
 abstract class RankingBaseAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>(), PinnedHeaderCallBack {
     var itemList = mutableListOf<RankingBaseItemModel>()
         private set
-/*
+
     //头部item标题点击事件
-    internal lateinit var titleClickListener: () -> Unit*/
+    lateinit var titleClickListener: (Any) -> Unit
 
     override fun getItemViewType(position: Int): Int {
         return if (itemList.size > 0) (itemList[position]).itemType else NO_DATA_ITEM
