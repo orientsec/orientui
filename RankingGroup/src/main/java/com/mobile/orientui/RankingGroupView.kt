@@ -12,21 +12,25 @@ import com.mobile.orientui.rankinggroup.R
 import kotlinx.android.synthetic.main.ranking_group_layout.view.*
 
 class RankingGroupView : FrameLayout {
+    //头部item标题点击事件
+    lateinit var titleClickListener: (Any) -> Unit
 
     lateinit var mScrollCallback: OnScrollCallback
     /**
      * recyclerview 刷新的起始位置，绝对位置值
      * 初始值为1
      */
-    private var startPosition: Int = 1
-    private var previousTotal: Int = 0
+    var startPosition: Int = 1
+    var previousTotal: Int = 0
 
-    private var isLoadingNewItem: Boolean = false
+    var isLoadingNewItem: Boolean = false
 
-    companion object {
+    private var maxRefreshCount:Int=20
+    private var cacheCount:Int=1
+/*    companion object {
         const val MAX_REFRESH_COUNT = 20
         const val CACHE_COUNT = 1
-    }
+    }*/
 
     constructor(context: Context) : this(context, null)
 
@@ -42,7 +46,8 @@ class RankingGroupView : FrameLayout {
 
     private fun initAttrs(context: Context, attrs: AttributeSet?, defStyle: Int) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.RankingGroupView, defStyle, 0)
-
+        maxRefreshCount=a.getInt(R.styleable.RankingGroupView_maxRefreshCount, 20)
+        cacheCount=a.getInt(R.styleable.RankingGroupView_cacheCount, 1)
         a.recycle()
     }
 
@@ -70,6 +75,16 @@ class RankingGroupView : FrameLayout {
         recycler_view_right.apply {
             addItemDecoration(decor)
         }
+    }
+
+    fun smoothScrollBy(dx:Int , dy:Int){
+        recycler_view_left.smoothScrollBy(dx, dy)
+        recycler_view_right.smoothScrollBy(dx, dy)
+    }
+
+    fun scrollToPosition(position:Int ){
+        recycler_view_left.scrollToPosition(position)
+        recycler_view_right.scrollToPosition(position)
     }
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
@@ -100,7 +115,7 @@ class RankingGroupView : FrameLayout {
             val firstVisibleItem = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
             val lastVisibleItem = (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
             val visibleItemCount = lastVisibleItem - firstVisibleItem + 1
-            if (totalItemCount < MAX_REFRESH_COUNT) return
+            if (totalItemCount < maxRefreshCount) return
 
             //上拉逻辑
             if (loading) {
@@ -111,18 +126,18 @@ class RankingGroupView : FrameLayout {
             } else if (totalItemCount - visibleItemCount <= firstVisibleItem) {
                 isLoadingNewItem = true
                 /*loadListData(totalItemCount - 1)*/
-                if (::mScrollCallback.isInitialized) mScrollCallback.loadMoreList()
+                if (::mScrollCallback.isInitialized) mScrollCallback.loadMoreList(totalItemCount)
                 loading = true
             }
 
             //滑动过程中，上拉刷新
-            if (dy > 0 && firstVisibleItem - startPosition >= MAX_REFRESH_COUNT - visibleItemCount) {
-                startPosition = firstVisibleItem - CACHE_COUNT
+            if (dy > 0 && firstVisibleItem - startPosition >= maxRefreshCount - visibleItemCount) {
+                startPosition = firstVisibleItem - cacheCount
             }
 
             //滑动过程中，下拉刷新
             if (dy < 0 && firstVisibleItem <= startPosition && startPosition > 1) {
-                val position = firstVisibleItem - (MAX_REFRESH_COUNT - CACHE_COUNT - visibleItemCount)
+                val position = firstVisibleItem - (maxRefreshCount - cacheCount - visibleItemCount)
                 startPosition = if (position <= 0) 1 else position
             }
         }
@@ -133,6 +148,6 @@ class RankingGroupView : FrameLayout {
 
         fun stopPollList()
 
-        fun loadMoreList()
+        fun loadMoreList(totalItemCount:Int)
     }
 }

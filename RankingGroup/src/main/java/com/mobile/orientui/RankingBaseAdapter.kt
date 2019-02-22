@@ -23,7 +23,7 @@ abstract class RankingBaseAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.A
 
     override fun isPlateViewType(viewType: Int): Boolean = false
     //最新数据列表
-    internal var latestCodeList: List<RankingBaseItemModel> = emptyList()
+    var latestCodeList: List<RankingBaseItemModel> = emptyList()
 
     /**
      * 刷新列表数据
