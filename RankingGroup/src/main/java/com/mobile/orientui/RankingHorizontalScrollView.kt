@@ -5,6 +5,9 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.HorizontalScrollView
 
+/**
+ * 控制右侧列表，横向和纵向的滑动冲突
+ */
 class RankingHorizontalScrollView(context: Context, attrs: AttributeSet) : HorizontalScrollView(context, attrs) {
     companion object {
         const val CONST_FIVE = 5

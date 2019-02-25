@@ -11,6 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobile.orientui.rankinggroup.R
 import kotlinx.android.synthetic.main.ranking_group_layout.view.*
 
+/**
+ * 综合行情列表
+ * 支持上下左右滑动
+ * 同时支持上拉刷新和静止时拉取数据
+ */
 class RankingGroupView : FrameLayout {
 
     lateinit var mScrollCallback: OnScrollCallback
@@ -19,12 +24,20 @@ class RankingGroupView : FrameLayout {
      * 初始值为1
      */
     var startPosition: Int = 1
+    /**
+     * 列表的前值数据量，用于判断是否需要加载新数据
+     */
     var previousTotal: Int = 0
 
     var isLoadingNewItem: Boolean = false
 
-    private var maxRefreshCount:Int=20
-    private var cacheCount:Int=1
+    /**
+     * 最大可加载数据量
+     */
+    var maxRefreshCount: Int = 20
+        private set
+    var cacheCount: Int = 1
+        private set
 
     constructor(context: Context) : this(context, null)
 
@@ -40,8 +53,8 @@ class RankingGroupView : FrameLayout {
 
     private fun initAttrs(context: Context, attrs: AttributeSet?, defStyle: Int) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.RankingGroupView, defStyle, 0)
-        maxRefreshCount=a.getInt(R.styleable.RankingGroupView_maxRefreshCount, 20)
-        cacheCount=a.getInt(R.styleable.RankingGroupView_cacheCount, 1)
+        maxRefreshCount = a.getInt(R.styleable.RankingGroupView_maxRefreshCount, 20)
+        cacheCount = a.getInt(R.styleable.RankingGroupView_cacheCount, 1)
         a.recycle()
     }
 
@@ -62,7 +75,7 @@ class RankingGroupView : FrameLayout {
         }
     }
 
-    fun addItemDecoration(decor: RecyclerView.ItemDecoration){
+    fun addItemDecoration(decor: RecyclerView.ItemDecoration) {
         recycler_view_left.apply {
             addItemDecoration(decor)
         }
@@ -71,12 +84,12 @@ class RankingGroupView : FrameLayout {
         }
     }
 
-    fun smoothScrollBy(dx:Int , dy:Int){
+    fun smoothScrollBy(dx: Int, dy: Int) {
         recycler_view_left.smoothScrollBy(dx, dy)
         recycler_view_right.smoothScrollBy(dx, dy)
     }
 
-    fun scrollToPosition(position:Int ){
+    fun scrollToPosition(position: Int) {
         recycler_view_left.scrollToPosition(position)
         recycler_view_right.scrollToPosition(position)
     }
@@ -137,11 +150,25 @@ class RankingGroupView : FrameLayout {
         }
     }
 
+    /**
+     * 列表滑动过程中，回调接口
+     */
     interface OnScrollCallback {
+        /**
+         * 列表静止时，刷新页面，拉取数据
+         * @param firstVisibleItem
+         * @param visibleItemCount:可见item数量，拉取数据
+         */
         fun startPollList(firstVisibleItem: Int, visibleItemCount: Int)
 
+        /**
+         * 列表滑动状态时，停止刷新，拉取数据
+         */
         fun stopPollList()
 
-        fun loadMoreList(totalItemCount:Int)
+        /**
+         * 底部上拉加载
+         */
+        fun loadMoreList(totalItemCount: Int)
     }
 }

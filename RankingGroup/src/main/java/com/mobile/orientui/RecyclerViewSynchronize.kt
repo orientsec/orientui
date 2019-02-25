@@ -2,6 +2,9 @@ package com.mobile.orientui
 
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * 协调左右两个recyclerview上下滑动事件
+ */
 class RecyclerViewSynchronize {
     private lateinit var firstListener: RecyclerView.OnScrollListener
     private lateinit var secondListener: RecyclerView.OnScrollListener
