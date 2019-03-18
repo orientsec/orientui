@@ -2,6 +2,7 @@ package com.mobile.orientui.pinnedrecyclerview
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayout
 import com.mobile.orientui.*
 import com.mobile.orientui.R
-import kotlinx.android.synthetic.main.pinned_rv_activity.*
 import com.mobile.orientui.divider.HorizontalDividerItemDecoration
+import kotlinx.android.synthetic.main.pinned_rv_activity.*
+import kotlinx.android.synthetic.main.pinned_rv_layout_head_item.view.*
 
 class PinnedRVActivity : AppCompatActivity() {
 
@@ -46,30 +49,40 @@ class PinnedRVActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        var list = listOf<RankingBaseItemModel>(HeadItem())
+        val list = mutableListOf<RankingBaseItemModel>(HeadItem())
 
         for (i in 0 until 20) {
             list += listOf(BodyItem())
         }
 
-        val endList = list + list + list
+        val list2 = mutableListOf(RankingBaseItemModel(2))
+
+        for (i in 0 until 20) {
+            list2 += listOf(BodyItem())
+        }
+
+        val list3 = mutableListOf(RankingBaseItemModel(3))
+        for (i in 0 until 20) {
+            list3 += listOf(BodyItem())
+        }
+
+        val endList = list + list2 + list3 + list + list2 + list3 + list + list2 + list3
         mAdapter.setupItemList(endList)
     }
 }
 
 class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), PinnedHeaderCallBack {
-    internal var itemList = mutableListOf<RankingBaseItemModel>()
-        private set
-
-    override fun getItemViewType(position: Int): Int {
-        return when (itemList[position]) {
-            is HeadItem -> R.layout.pinned_rv_layout_head_item
-            is BodyItem -> R.layout.pinned_rv_layout_body_item
-            else -> 0
-        }
+    companion object {
+        private const val TAG = "Pinned"
     }
 
-    override fun isPinnedViewType(viewType: Int): Boolean = viewType == R.layout.pinned_rv_layout_head_item
+    private var itemList = mutableListOf<RankingBaseItemModel>()
+
+    override fun getItemViewType(position: Int): Int {
+        return itemList[position].itemType
+    }
+
+    override fun isPinnedViewType(viewType: Int): Boolean = viewType != 1
 
     override fun isPlateViewType(viewType: Int): Boolean = false
 
@@ -78,7 +91,11 @@ class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), PinnedHe
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PinnedAdapter.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
+        val itemId = when (viewType) {
+            1 -> R.layout.pinned_rv_layout_body_item
+            else -> R.layout.pinned_rv_layout_head_item
+        }
+        val itemView = LayoutInflater.from(parent.context).inflate(itemId, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -86,9 +103,32 @@ class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), PinnedHe
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal fun bindView(item: RankingBaseItemModel) {
-
+            when (item.itemType) {
+                1 -> {
+                    itemView.setOnClickListener { Log.d(TAG, "item click") }
+                }
+                else -> {// head
+                    itemView.apply {
+                        tabLayout.removeOnTabSelectedListener(listener)
+                        tabLayout.addOnTabSelectedListener(listener)
+                    }
+                }
+            }
         }
     }
+
+    val listener = object : TabLayout.OnTabSelectedListener {
+        override fun onTabReselected(p0: TabLayout.Tab?) {
+        }
+
+        override fun onTabUnselected(p0: TabLayout.Tab?) {
+        }
+
+        override fun onTabSelected(p0: TabLayout.Tab?) {
+            Log.i(TAG, "head  ,tab position ${p0?.position}")
+        }
+    }
+
 
     /**
      * 设置数据

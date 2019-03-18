@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<com.google.android.material.tabs.TabLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tabLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true">
+    android:layout_height="45dp"
+    app:tabBackground="@android:color/white"
+    app:tabIndicatorColor="#EC2E31"
+    app:tabIndicatorFullWidth="false"
+    app:tabIndicatorHeight="2dp"
+    app:tabMode="fixed"
+    app:tabSelectedTextColor="#EC2E31"
+    app:tabTextAppearance="@style/text_20_1F1F1F"
+    app:tabTextColor="#A1A1A1">
 
-    <TextView
-        android:layout_gravity="center"
+    <com.google.android.material.tabs.TabItem
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="head"/>
-</FrameLayout>
+        android:layout_height="match_parent"
+        android:text="Tab 1" />
+
+    <com.google.android.material.tabs.TabItem
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Tab 2" />
+
+    <com.google.android.material.tabs.TabItem
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Tab 3" />
+
+</com.google.android.material.tabs.TabLayout>

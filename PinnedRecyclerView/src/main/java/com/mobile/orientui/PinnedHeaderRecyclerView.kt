@@ -15,6 +15,7 @@ class PinnedHeaderRecyclerView : RecyclerView {
     private var mHeaderVH: ViewHolder? = null
     private val viewCache = SparseArray<ViewHolder>()
     private var mTouchTarget: View? = null
+    private var oldViewType = -1
 
     /**
      * 是否支持点击pinned Item，收放显示列表
@@ -59,6 +60,7 @@ class PinnedHeaderRecyclerView : RecyclerView {
 
                         //判断是否支持点击悬浮item，收放列表
                         if (isRetractable) judgeCreateHeader()
+                        invalidate()
                     }
                 }
                 return true
@@ -67,6 +69,9 @@ class PinnedHeaderRecyclerView : RecyclerView {
         return super.dispatchTouchEvent(ev)
     }
 
+    /**
+     * 获取点击的View
+     */
     private fun getTouchTarget(view: View, x: Int, y: Int): View {
         if (view !is ViewGroup) {
             return view
@@ -77,8 +82,11 @@ class PinnedHeaderRecyclerView : RecyclerView {
         for (i in childrenCount - 1 downTo 0) {
             val childIndex = if (isChildrenDrawingOrderEnabled) getChildDrawingOrder(childrenCount, i) else i
             val child = view.getChildAt(childIndex)
-            if (isTouchPointInView(child, x, y)) {
+            if (child.isClickable && isTouchPointInView(child, x, y)) {
                 target = child
+                break
+            } else if (isTouchPointInView(child, x, y)) {
+                target = getTouchTarget(child, x, y)
                 break
             }
         }
@@ -90,54 +98,80 @@ class PinnedHeaderRecyclerView : RecyclerView {
     }
 
     private fun isTouchPointInView(view: View, x: Int, y: Int): Boolean {
-        return (view.isClickable && y >= view.top && y <= view.bottom
+        return (/*view.isClickable &&*/ y >= view.top && y <= view.bottom
                 && x >= view.left && x <= view.right)
     }
 
-    private fun createHeaderView() {
+    private fun setupView() {
         val firstVisiblePosition = getFirstVisiblePosition()
         val headerPosition = findPinnedHeaderPosition(firstVisiblePosition)
+        createHeaderView(headerPosition)
+        layoutHeaderView(firstVisiblePosition, headerPosition)
+    }
 
-        if (headerPosition >= 0/*&&adapter.itemCount>*/) {
+    /**
+     * 创建Header View
+     */
+    private fun createHeaderView(headerPosition: Int) {
+        if (headerPosition >= 0) {
             val viewType = adapter?.getItemViewType(headerPosition) ?: return
+            val isChangeHeader = viewType != oldViewType
+            oldViewType = viewType
             mHeaderVH = viewCache.get(viewType)
             if (null == mHeaderVH) {
                 val viewHolder = findViewHolderForAdapterPosition(headerPosition)
                 if (viewHolder?.itemView == null) {
                     return
                 }
-                mHeaderVH = adapter?.onCreateViewHolder(this, viewType)
-                mHeaderVH!!.itemView.layoutParams = RecyclerView.LayoutParams(viewHolder.itemView.measuredWidth, viewHolder.itemView.measuredHeight)
-                measureChild(mHeaderVH!!.itemView, measuredWidthAndState, measuredHeightAndState)
-                viewCache.put(viewType, mHeaderVH!!)
+                createHeaderViewHolder(viewHolder, viewType)
+                        ?.let { vh ->
+                            viewCache.put(viewType, vh)
+                            mHeaderVH = vh
+                            bindHeaderViewHolder(vh, headerPosition)
+                        }
+            } else if (isChangeHeader) {
+                bindHeaderViewHolder(mHeaderVH!!, headerPosition)
             }
-            try {
-                if (mHeaderVH != null) {
-                    adapter?.onBindViewHolder(mHeaderVH!!, headerPosition)
-                }
-            } catch (e: Exception) {
-                mHeaderVH?.itemView?.layout(0, 0, 0, 0)
-                mHeaderVH = null
-                e.printStackTrace()
-            }
-
         } else {
             if (headerPosition == -1) {
-                mHeaderVH?.itemView?.layout(0, 0, 0, 0)
-                mHeaderVH = null
+                removeHeader()
             }
         }
     }
 
-    private fun layoutHeaderView() {
+    /**
+     * 创建Header ViewHolder
+     */
+    private fun createHeaderViewHolder(itemVH: ViewHolder, headerType: Int): ViewHolder? {
+        val vh = adapter?.onCreateViewHolder(this, headerType) ?: return null
+        vh.itemView.layoutParams = RecyclerView.LayoutParams(itemVH.itemView.measuredWidth, itemVH.itemView.measuredHeight)
+        measureChild(vh.itemView, measuredWidthAndState, measuredHeightAndState)
+        return vh
+    }
+
+    /**
+     * 绑定header viewHolder
+     */
+    private fun bindHeaderViewHolder(headerVH: ViewHolder, headerPosition: Int) {
+        try {
+            adapter?.onBindViewHolder(headerVH, headerPosition) ?: return
+        } catch (e: Exception) {
+            removeHeader()
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * 绘制headerView 位置
+     */
+    private fun layoutHeaderView(firstVisiblePos: Int, headerPosition: Int) {
         mHeaderVH?.let {
-            val firstVisiblePos = getFirstVisiblePosition()
             val adapter = adapter ?: return
-            if (firstVisiblePos + 1 < adapter.itemCount && isPinnedViewType(adapter.getItemViewType(firstVisiblePos + 1))) {
+            if (firstVisiblePos + 1 < adapter.itemCount
+                    && isPinnedViewType(adapter.getItemViewType(firstVisiblePos + 1))) {
                 val position = (layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition()
                         ?: -1
                 val view = getChildAt(1 + if (isPlateViewType(position)) 2 else 0) ?: return
-                val headerPosition = findPinnedHeaderPosition(firstVisiblePos)
                 if (view.measuredHeight == it.itemView.measuredHeight
                         && view.top <= it.itemView.measuredHeight - 1) {
                     val delta = it.itemView.measuredHeight - view.top
@@ -153,6 +187,9 @@ class PinnedHeaderRecyclerView : RecyclerView {
         }
     }
 
+    /**
+     * 获取首个可视item position
+     */
     private fun getFirstVisiblePosition(): Int {
         val adapter = adapter ?: return -1
         val layoutManager = layoutManager
@@ -163,6 +200,9 @@ class PinnedHeaderRecyclerView : RecyclerView {
         return position + if (isPlateViewType(position)) 2 else 0
     }
 
+    /**
+     * 获取需要吸顶Item position
+     */
     private fun findPinnedHeaderPosition(fromPosition: Int): Int {
         val adapter = adapter ?: return -1
         if (fromPosition >= adapter.itemCount) return -1
@@ -177,6 +217,9 @@ class PinnedHeaderRecyclerView : RecyclerView {
         return -1
     }
 
+    /**
+     * 判断是否为需要置顶的类型
+     */
     private fun isPinnedViewType(viewType: Int): Boolean {
         if (adapter is PinnedHeaderCallBack) {
             return try {
@@ -211,16 +254,28 @@ class PinnedHeaderRecyclerView : RecyclerView {
         if (position >= 0) {
             (this.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(position, 0)
             if (position == getFirstVisiblePosition()) {
-                createHeaderView()
-                layoutHeaderView()
+                setupView()
             } else {
-                mHeaderVH?.itemView?.layout(0, 0, 0, 0)
-                mHeaderVH = null
+                removeHeader()
             }
         } else {
-            mHeaderVH?.itemView?.layout(0, 0, 0, 0)
-            mHeaderVH = null
+            removeHeader()
         }
+    }
+
+    /**
+     * 删除header
+     */
+    private fun removeHeader() {
+        mHeaderVH?.itemView?.apply {
+            layout(0, 0, 0, 0)
+        }
+        mHeaderVH = null
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        viewCache.clear()
     }
 
     private inner class ScrollListener : RecyclerView.OnScrollListener() {
@@ -228,8 +283,8 @@ class PinnedHeaderRecyclerView : RecyclerView {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             //if (dx == 0 && dy == 0) return
-            createHeaderView()
-            layoutHeaderView()
+            if (adapter !is PinnedHeaderCallBack) return
+            setupView()
         }
     }
 }
