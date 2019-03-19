@@ -1,7 +1,9 @@
+[![](https://jitpack.io/v/Orientsec/OrientUI.svg)](https://jitpack.io/#Orientsec/OrientUI)
+
 # OrientUI
 东方证券Android的UI组件库
 ## 添加仓库
-```html
+```groovy
 allprojects {
     repositories {
         maven {
@@ -18,18 +20,19 @@ allprojects {
 #### 如何使用
 ----
 - 添加下述依赖：
-```api
+```groovy
 api 'com.github.Orientsec.OrientUI : PinnedRecyclerView:1.0.0'
 ```
 - 加入布局
 在布局的xml中加入：
-```
+```xml
+<!--判断是否支持点击收放列表-->
 <com.mobile.orientui.PinnedHeaderRecyclerView
-	app:isRetractable="false"//判断是否支持点击收放列表
-    .../>
+	app:isRetractable="false"
+    />
 ```
 - 代码继承
-```
+```kotlin
 class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), PinnedHeaderCallBack {
 		//根据viewType类型判断是否为headItem，是顶部item悬浮显示
 		override fun isPinnedViewType(viewType: Int): Boolean {}
@@ -48,20 +51,22 @@ class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), PinnedHe
 #### 如何使用
 ----
 - 添加下述依赖：
-```
+```groovy
 api 'com.github.Orientsec.OrientUI: RankingGroup:1.0.0'
 ```
 - 加入布局
 在布局的xml中加入：
-```
+```xml
+  <!--app:maxRefreshCount="20" 根据后端的承载能力设置刷新数量-->
+  <!--app:cacheCount="1" 缓存-->
 <com.mobile.orientui.RankingGroupView
-	app:maxRefreshCount="20"//根据后端的承载能力设置刷新数量
-	app:cacheCount="1"//缓存
-    .../>
+	app:maxRefreshCount="20"
+	app:cacheCount="1"
+    />
 ```
 - 代码
 1、自定义左右两边的adapter，数据类型为HEAD_ITEM、NORMAL_ITEM和NO_DATA_ITEM
-```
+```kotlin
     private lateinit var mLeftAdapter: RankingBaseAdapter<*>
 
 	class LeftAdapter : RankingBaseAdapter<LeftAdapter.ViewHolder>() {}
@@ -71,19 +76,19 @@ api 'com.github.Orientsec.OrientUI: RankingGroup:1.0.0'
 	class RightAdapter : RankingBaseAdapter<RightAdapter.ViewHolder>() {}
 ```
 2、继承回调
-```
+```kotlin
 	//监听滑动事件
 	private val scrollCallback = object : RankingGroupView.OnScrollCallback {
-	........
+	
 	}
 ```
 3、初始化rankinggroup
-```
+```kotlin
 	//初始化view
     private fun initView(view: View) {
         view.ranking_gv.apply {
             setAdapter(mLeftAdapter, mRightAdapter)
-            addItemDecoration(...)
+            addItemDecoration()
             mScrollCallback = scrollCallback
         }
     }
