@@ -15,7 +15,6 @@ class PinnedHeaderRecyclerView : RecyclerView {
     private var mHeaderVH: ViewHolder? = null
     private val viewCache = SparseArray<ViewHolder>()
     private var mTouchTarget: View? = null
-    private var oldViewType = -1
 
     /**
      * 是否支持点击pinned Item，收放显示列表
@@ -115,8 +114,6 @@ class PinnedHeaderRecyclerView : RecyclerView {
     private fun createHeaderView(headerPosition: Int) {
         if (headerPosition >= 0) {
             val viewType = adapter?.getItemViewType(headerPosition) ?: return
-            val isChangeHeader = viewType != oldViewType
-            oldViewType = viewType
             mHeaderVH = viewCache.get(viewType)
             if (null == mHeaderVH) {
                 val viewHolder = findViewHolderForAdapterPosition(headerPosition)
@@ -129,9 +126,8 @@ class PinnedHeaderRecyclerView : RecyclerView {
                             mHeaderVH = vh
                             bindHeaderViewHolder(vh, headerPosition)
                         }
-            } else if (isChangeHeader) {
-                bindHeaderViewHolder(mHeaderVH!!, headerPosition)
             }
+            bindHeaderViewHolder(mHeaderVH!!, headerPosition)
         } else {
             if (headerPosition == -1) {
                 removeHeader()
