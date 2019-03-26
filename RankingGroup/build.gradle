@@ -35,7 +35,7 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
-    implementation project(':PinnedRecyclerView')
+    compileOnly project(':PinnedRecyclerView')
 }
 repositories {
     mavenCentral()
