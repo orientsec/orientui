@@ -140,7 +140,7 @@ class PinnedHeaderRecyclerView : RecyclerView {
      */
     private fun createHeaderViewHolder(itemVH: ViewHolder, headerType: Int): ViewHolder? {
         val vh = adapter?.onCreateViewHolder(this, headerType) ?: return null
-        vh.itemView.layoutParams = RecyclerView.LayoutParams(itemVH.itemView.measuredWidth, itemVH.itemView.measuredHeight)
+        vh.itemView.layoutParams = LayoutParams(itemVH.itemView.measuredWidth, itemVH.itemView.measuredHeight)
         measureChild(vh.itemView, measuredWidthAndState, measuredHeightAndState)
         return vh
     }
@@ -159,6 +159,8 @@ class PinnedHeaderRecyclerView : RecyclerView {
 
     /**
      * 绘制headerView 位置
+     * @param firstVisiblePos 首位可见item的position
+     * @param headerPosition 需要吸顶的item的position
      */
     private fun layoutHeaderView(firstVisiblePos: Int, headerPosition: Int) {
         mHeaderVH?.let {
@@ -190,7 +192,7 @@ class PinnedHeaderRecyclerView : RecyclerView {
         val adapter = adapter ?: return -1
         val layoutManager = layoutManager
         val position = (layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition() ?: -1
-        if (position >= adapter.itemCount) {
+        if (position < 0 || position >= adapter.itemCount) {
             return -1
         }
         return position + if (isPlateViewType(position)) 2 else 0
@@ -246,10 +248,15 @@ class PinnedHeaderRecyclerView : RecyclerView {
      * 处理悬浮item的点击事件
      */
     private fun judgeCreateHeader() {
-        val position = findPinnedHeaderPosition(getFirstVisiblePosition() + 1)
+        val firstVisiblePos = getFirstVisiblePosition()
+        if (firstVisiblePos < 0) {
+            removeHeader()
+            return
+        }
+        val position = findPinnedHeaderPosition(firstVisiblePos + 1)
         if (position >= 0) {
             (this.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(position, 0)
-            if (position == getFirstVisiblePosition()) {
+            if (position == firstVisiblePos) {
                 setupView()
             } else {
                 removeHeader()
