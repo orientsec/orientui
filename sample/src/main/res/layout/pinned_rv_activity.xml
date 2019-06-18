@@ -8,8 +8,7 @@
     <com.mobile.orientui.RefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <com.mobile.orientui.PinnedHeaderRecyclerView
+    <com.mobile.orientui.pinnedrecyclerview.PinnedHeaderRecyclerView
             android:id="@+id/pinned_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

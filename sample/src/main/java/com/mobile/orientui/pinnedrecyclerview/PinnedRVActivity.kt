@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout
 import com.mobile.orientui.*
 import com.mobile.orientui.R
 import com.mobile.orientui.divider.HorizontalDividerItemDecoration
+import com.mobile.orientui.rankinggroup.RankingBaseItemModel
 import kotlinx.android.synthetic.main.pinned_rv_activity.*
 import kotlinx.android.synthetic.main.pinned_rv_layout_head_item.view.*
 
