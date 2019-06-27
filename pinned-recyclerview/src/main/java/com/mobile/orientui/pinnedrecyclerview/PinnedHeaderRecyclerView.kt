@@ -81,7 +81,11 @@ class PinnedHeaderRecyclerView : RecyclerView {
             val childIndex = if (isChildrenDrawingOrderEnabled) getChildDrawingOrder(childrenCount, i) else i
             val child = view.getChildAt(childIndex)
             if (child.isClickable && isTouchPointInView(child, x, y)) {
-                target = child
+                target = if (child is ViewGroup) {
+                    getTouchTarget(child, x, y)
+                } else {
+                    child
+                }
                 break
             } else if (isTouchPointInView(child, x, y)) {
                 target = getTouchTarget(child, x, y)
