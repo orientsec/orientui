@@ -92,7 +92,7 @@ class PinnedHeaderRecyclerView : RecyclerView {
                 break
             }
         }
-        if (target == null) {
+        if (target == null || !target.isClickable) {
             target = view
         }
 
@@ -100,8 +100,13 @@ class PinnedHeaderRecyclerView : RecyclerView {
     }
 
     private fun isTouchPointInView(view: View, x: Int, y: Int): Boolean {
-        return (/*view.isClickable &&*/ y >= view.top && y <= view.bottom
-                && x >= view.left && x <= view.right)
+        val left = view.x.toInt()
+        val top = view.y.toInt()
+        val right = left + view.measuredWidth
+        val bottom = top + view.measuredHeight
+        return y in top..bottom && x in left..right
+//        return (/*view.isClickable &&*/ y >= view.top && y <= view.bottom
+//                && x >= view.left && x <= view.right)
     }
 
     private fun setupView() {

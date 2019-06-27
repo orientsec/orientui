@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
-import com.mobile.orientui.*
+import com.mobile.orientui.BodyItem
+import com.mobile.orientui.HeadItem
 import com.mobile.orientui.R
 import com.mobile.orientui.divider.HorizontalDividerItemDecoration
 import com.mobile.orientui.rankinggroup.RankingBaseItemModel
