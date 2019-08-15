@@ -42,11 +42,16 @@ class PinnedRVActivity : AppCompatActivity() {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
+            val tempAdapter = mAdapter as StickyHeadersAdapter<PinnedAdapter.ViewHolder>
+            val decoration = StickyHeadersDecoration(tempAdapter)
+            addItemDecoration(decoration)
             addItemDecoration(HorizontalDividerItemDecoration.Builder(context)
                     .margin(15, 15)
                     .size(1)
                     .color(Color.parseColor("#c4c4c4"))
                     .build())
+
+            addOnItemTouchListener(HeaderTouchListener(this, decoration))
         }
     }
 
@@ -73,7 +78,7 @@ class PinnedRVActivity : AppCompatActivity() {
     }
 }
 
-class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), PinnedHeaderCallBack {
+class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), StickyHeadersAdapter<PinnedAdapter.ViewHolder> {
     companion object {
         private const val TAG = "Pinned"
     }
@@ -84,15 +89,15 @@ class PinnedAdapter : RecyclerView.Adapter<PinnedAdapter.ViewHolder>(), PinnedHe
         return itemList[position].itemType
     }
 
-    override fun isPinnedViewType(viewType: Int): Boolean = viewType != 1
+    override fun isStickyHeaderViewType(viewType: Int): Boolean = viewType != 1
 
-    override fun isPlateViewType(viewType: Int): Boolean = false
+//    override fun isPlateViewType(viewType: Int): Boolean = false
 
-    override fun onBindViewHolder(holder: PinnedAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindView(itemList[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PinnedAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemId = when (viewType) {
             1 -> R.layout.pinned_rv_layout_body_item
             else -> R.layout.pinned_rv_layout_head_item

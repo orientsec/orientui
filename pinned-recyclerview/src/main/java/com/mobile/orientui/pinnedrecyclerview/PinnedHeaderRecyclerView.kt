@@ -2,11 +2,13 @@ package com.mobile.orientui.pinnedrecyclerview
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewParent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -100,13 +102,33 @@ class PinnedHeaderRecyclerView : RecyclerView {
     }
 
     private fun isTouchPointInView(view: View, x: Int, y: Int): Boolean {
-        val left = view.x.toInt()
-        val top = view.y.toInt()
-        val right = left + view.measuredWidth
-        val bottom = top + view.measuredHeight
-        return y in top..bottom && x in left..right
-//        return (/*view.isClickable &&*/ y >= view.top && y <= view.bottom
-//                && x >= view.left && x <= view.right)
+        val top = calculateViewTop(view).toFloat()
+        val left = calculateViewLeft(view).toFloat()
+        val rect = RectF(left,
+                top,
+                left + view.measuredWidth,
+                top + view.measuredHeight)
+        return rect.contains(x.toFloat(), y.toFloat())
+    }
+
+    private fun calculateViewTop(view: View): Int {
+        var top: Int = view.top
+        var p: ViewParent? = view.parent
+        while (p != null) {
+            top += (p as View).top
+            p = (p as ViewParent).parent
+        }
+        return top
+    }
+
+    private fun calculateViewLeft(view: View): Int {
+        var top: Int = view.left
+        var p: ViewParent? = view.parent
+        while (p != null) {
+            top += (p as View).left
+            p = (p as ViewParent).parent
+        }
+        return top
     }
 
     private fun setupView() {
@@ -124,15 +146,15 @@ class PinnedHeaderRecyclerView : RecyclerView {
             val viewType = adapter?.getItemViewType(headerPosition) ?: return
             mHeaderVH = viewCache.get(viewType)
             if (null == mHeaderVH) {
-                val viewHolder = findViewHolderForAdapterPosition(headerPosition)
+               /* val viewHolder = findViewHolderForAdapterPosition(headerPosition)
                 if (viewHolder?.itemView == null) {
                     return
-                }
-                createHeaderViewHolder(viewHolder, viewType)
+                }*/
+                createHeaderViewHolder(/*viewHolder,*/ viewType)
                         ?.let { vh ->
                             viewCache.put(viewType, vh)
                             mHeaderVH = vh
-                            bindHeaderViewHolder(vh, headerPosition)
+//                            bindHeaderViewHolder(vh, headerPosition)
                         }
             }
             bindHeaderViewHolder(mHeaderVH!!, headerPosition)
@@ -146,9 +168,9 @@ class PinnedHeaderRecyclerView : RecyclerView {
     /**
      * 创建Header ViewHolder
      */
-    private fun createHeaderViewHolder(itemVH: ViewHolder, headerType: Int): ViewHolder? {
+    private fun createHeaderViewHolder(/*itemVH: ViewHolder,*/ headerType: Int): ViewHolder? {
         val vh = adapter?.onCreateViewHolder(this, headerType) ?: return null
-        vh.itemView.layoutParams = LayoutParams(itemVH.itemView.measuredWidth, itemVH.itemView.measuredHeight)
+        vh.itemView.layoutParams = LayoutParams(measuredWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
         measureChild(vh.itemView, measuredWidthAndState, measuredHeightAndState)
         return vh
     }
