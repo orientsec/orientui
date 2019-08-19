@@ -23,6 +23,27 @@ class StickyHeadersDecoration(private val adapter: StickyHeadersAdapter<out Recy
                 super.onChanged()
                 invalidateHeaders()
             }
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+                super.onItemRangeChanged(positionStart, itemCount)
+                invalidateHeaders()
+            }
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                invalidateHeaders()
+            }
+
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+                super.onItemRangeMoved(fromPosition, toPosition, itemCount)
+                invalidateHeaders()
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                super.onItemRangeRemoved(positionStart, itemCount)
+                invalidateHeaders()
+            }
+
         })
     }
 

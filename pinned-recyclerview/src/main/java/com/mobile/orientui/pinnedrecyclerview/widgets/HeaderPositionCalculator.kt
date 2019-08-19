@@ -94,6 +94,9 @@ internal class HeaderPositionCalculator(private val mAdapter: StickyHeadersAdapt
         }
         val lastChildPos = parent.getChildAdapterPosition(parent.getChildAt(parent.childCount - 1))
         val firstHeaderPos = getHeaderPosition(firstChildPos)
+        if (firstChildPos == RecyclerView.NO_POSITION) {
+            return false
+        }
         val lastHeaderPos = getHeaderPosition(lastChildPos)
         if (firstHeaderPos != lastHeaderPos) {
             val nextHeaderPos = getNextHeaderPosition(firstChildPos)
@@ -187,6 +190,7 @@ internal class HeaderPositionCalculator(private val mAdapter: StickyHeadersAdapt
     }
 
     fun getHeaderPosition(fromPosition: Int): Int {
+        if (headerPositions.isEmpty()) return RecyclerView.NO_POSITION
         headerPositions.reduce { acc, i ->
             if (fromPosition in acc until i) {
                 return acc
@@ -197,6 +201,7 @@ internal class HeaderPositionCalculator(private val mAdapter: StickyHeadersAdapt
     }
 
     private fun getNextHeaderPosition(position: Int): Int {
+        if (headerPositions.isEmpty()) return RecyclerView.NO_POSITION
         headerPositions.reduce { acc, i ->
             if (position in acc until i) {
                 return i
