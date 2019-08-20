@@ -146,15 +146,15 @@ class PinnedHeaderRecyclerView : RecyclerView {
             val viewType = adapter?.getItemViewType(headerPosition) ?: return
             mHeaderVH = viewCache.get(viewType)
             if (null == mHeaderVH) {
-               /* val viewHolder = findViewHolderForAdapterPosition(headerPosition)
+                val viewHolder = findViewHolderForAdapterPosition(headerPosition)
                 if (viewHolder?.itemView == null) {
                     return
-                }*/
-                createHeaderViewHolder(/*viewHolder,*/ viewType)
+                }
+                createHeaderViewHolder(viewHolder, viewType)
                         ?.let { vh ->
                             viewCache.put(viewType, vh)
                             mHeaderVH = vh
-//                            bindHeaderViewHolder(vh, headerPosition)
+                            bindHeaderViewHolder(vh, headerPosition)
                         }
             }
             bindHeaderViewHolder(mHeaderVH!!, headerPosition)
@@ -168,9 +168,9 @@ class PinnedHeaderRecyclerView : RecyclerView {
     /**
      * 创建Header ViewHolder
      */
-    private fun createHeaderViewHolder(/*itemVH: ViewHolder,*/ headerType: Int): ViewHolder? {
+    private fun createHeaderViewHolder(itemVH: ViewHolder, headerType: Int): ViewHolder? {
         val vh = adapter?.onCreateViewHolder(this, headerType) ?: return null
-        vh.itemView.layoutParams = LayoutParams(measuredWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+        vh.itemView.layoutParams = LayoutParams(itemVH.itemView.measuredWidth, itemVH.itemView.measuredHeight)
         measureChild(vh.itemView, measuredWidthAndState, measuredHeightAndState)
         return vh
     }
