@@ -154,8 +154,8 @@ class PinnedHeaderRecyclerView : RecyclerView {
                         ?.let { vh ->
                             viewCache.put(viewType, vh)
                             mHeaderVH = vh
-                            bindHeaderViewHolder(vh, headerPosition)
-                        }
+//                            bindHeaderViewHolder(vh, headerPosition)
+                        } ?: return
             }
             bindHeaderViewHolder(mHeaderVH!!, headerPosition)
         } else {
