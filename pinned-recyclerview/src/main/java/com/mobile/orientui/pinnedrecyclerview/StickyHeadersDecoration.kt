@@ -74,6 +74,8 @@ class StickyHeadersDecoration(private val adapter: StickyHeadersAdapter<out Recy
 
         val firstChildPos = parent.getChildAdapterPosition(parent.getChildAt(0))
         if (!calculator.isInHeaderRegion(firstChildPos)) {
+            headerProvider.invalidate()
+            mHeaderRects.clear()
             return
         }
         val firstHeaderPos = calculator.getHeaderPosition(firstChildPos)
