@@ -26,6 +26,12 @@ class HeaderTouchListener(private val recyclerView: RecyclerView,
         return false
     }
 
+    override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+        if (e.action == MotionEvent.ACTION_DOWN) return
+
+        this.mTapDetector.onTouchEvent(e)
+    }
+
     private inner class SingleTapDetector : GestureDetector.SimpleOnGestureListener() {
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             val position = decoration.findHeaderPositionUnder(e.x.toInt(), e.y.toInt())

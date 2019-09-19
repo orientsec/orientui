@@ -42,16 +42,16 @@ class PinnedRVActivity : AppCompatActivity() {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
-            val tempAdapter = mAdapter as StickyHeadersAdapter<PinnedAdapter.ViewHolder>
-            val decoration = StickyHeadersDecoration(tempAdapter)
+            val decoration = StickyHeadersDecoration(mAdapter)
             addItemDecoration(decoration)
+            addOnItemTouchListener(HeaderTouchListener(this, decoration))
             addItemDecoration(HorizontalDividerItemDecoration.Builder(context)
                     .margin(15, 15)
                     .size(1)
                     .color(Color.parseColor("#c4c4c4"))
                     .build())
 
-            addOnItemTouchListener(HeaderTouchListener(this, decoration))
+
         }
     }
 
