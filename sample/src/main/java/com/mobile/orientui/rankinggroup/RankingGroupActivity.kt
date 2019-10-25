@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobile.orientui.*
 import com.mobile.orientui.R
 import com.mobile.orientui.divider.HorizontalDividerItemDecoration
+import com.mobile.orientui.pinnedrecyclerview.StickyHeadersAdapter
 import kotlinx.android.synthetic.main.randking_group_activity.*
 
 class RankingGroupActivity : AppCompatActivity() {
@@ -46,15 +47,14 @@ class RankingGroupActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        var list = listOf<RankingBaseItemModel>(HeadItem())
+        val list = mutableListOf<RankingBaseItemModel>(HeadItem())
 
         for (i in 0 until 50) {
             list += listOf(BodyItem())
         }
 
-        val endList = list
-        mLeftAdapter.setupItemList(endList)
-        mRightAdapter.setupItemList(endList)
+        mLeftAdapter.setupItemList(list)
+        mRightAdapter.setupItemList(list)
     }
 
     private val scrollCallback = object : RankingGroupView.OnScrollCallback {
@@ -73,11 +73,11 @@ class RankingGroupActivity : AppCompatActivity() {
 }
 
 class RankingLeftAdapter : RankingBaseAdapter<RankingLeftAdapter.ViewHolder>() {
-    override fun onBindViewHolder(holder: RankingLeftAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindView(itemList[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankingLeftAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val view = when (viewType) {
             HEAD_ITEM -> LayoutInflater.from(parent.context).inflate(R.layout.ranking_group_left_head_item, parent, false)
@@ -96,11 +96,11 @@ class RankingLeftAdapter : RankingBaseAdapter<RankingLeftAdapter.ViewHolder>() {
 
 class RankingRightAdapter : RankingBaseAdapter<RankingRightAdapter.ViewHolder>() {
 
-    override fun onBindViewHolder(holder: RankingRightAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindView(itemList[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankingRightAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val view = when (viewType) {
             HEAD_ITEM -> LayoutInflater.from(parent.context).inflate(R.layout.ranking_right_head_global, parent, false) as LinearLayout

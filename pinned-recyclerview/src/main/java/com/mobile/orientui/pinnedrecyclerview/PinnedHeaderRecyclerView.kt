@@ -12,6 +12,7 @@ import android.view.ViewParent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
+@Deprecated("使用原生RecyclerView+StickyHeadersDecoration")
 class PinnedHeaderRecyclerView : RecyclerView {
     private var mHeaderVH: ViewHolder? = null
     private val viewCache = SparseArray<ViewHolder>()

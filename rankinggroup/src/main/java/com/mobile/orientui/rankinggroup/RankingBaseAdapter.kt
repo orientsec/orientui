@@ -2,12 +2,13 @@ package com.mobile.orientui.rankinggroup
 
 import androidx.recyclerview.widget.RecyclerView
 import com.mobile.orientui.pinnedrecyclerview.PinnedHeaderCallBack
+import com.mobile.orientui.pinnedrecyclerview.StickyHeadersAdapter
 import java.util.ArrayList
 
 /**
  * 行情列表base adapter
  */
-abstract class RankingBaseAdapter<VH : RecyclerView.ViewHolder>(head: RankingBaseItemModel = RankingBaseItemModel(HEAD_ITEM)) : RecyclerView.Adapter<VH>(), PinnedHeaderCallBack {
+abstract class RankingBaseAdapter<VH : RecyclerView.ViewHolder>(head: RankingBaseItemModel = RankingBaseItemModel(HEAD_ITEM)) : RecyclerView.Adapter<VH>(), StickyHeadersAdapter<VH> {
     var itemList = mutableListOf(head)
         private set
 
@@ -20,9 +21,8 @@ abstract class RankingBaseAdapter<VH : RecyclerView.ViewHolder>(head: RankingBas
 
     override fun getItemCount(): Int = itemList.size
 
-    override fun isPinnedViewType(viewType: Int): Boolean = viewType == HEAD_ITEM
+    override fun isStickyHeaderViewType(viewType: Int): Boolean = viewType == HEAD_ITEM
 
-    override fun isPlateViewType(viewType: Int): Boolean = false
     //最新数据列表
     var latestCodeList: List<RankingBaseItemModel> = emptyList()
 

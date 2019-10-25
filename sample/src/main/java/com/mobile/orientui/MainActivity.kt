@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.mobile.orientui.pinnedrecyclerview.PinnedRVActivity
 import com.mobile.orientui.rankinggroup.RankingGroupActivity
+import com.mobile.orientui.theme.TestThemeActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 Intent(this, PinnedRVActivity::class.java)
             }
             else -> {
-                Intent(this, PinnedRVActivity::class.java)
+                Intent(this, TestThemeActivity::class.java)
             }
         }
 

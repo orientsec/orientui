@@ -29,6 +29,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="加载UI"
+        android:onClick="btnClickEvent"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="304dp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="东方控件"
+        android:onClick="btnClickEvent"
         tools:layout_editor_absoluteX="161dp"
         tools:layout_editor_absoluteY="304dp" />
 </LinearLayout>

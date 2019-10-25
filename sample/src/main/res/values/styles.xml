@@ -6,11 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="dialogTheme">@style/Base.V7.ThemeOverlay.AppCompat.Dialog.Winner</item>
     </style>
 
-    <style name="text_20_1F1F1F">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">#1F1F1F</item>
-    </style>
+    <style name="Base.V7.ThemeOverlay.AppCompat.Dialog.Winner"/>
 
 </resources>

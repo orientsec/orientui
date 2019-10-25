@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mobile.orientui.pinnedrecyclerview.HeaderTouchListener
+import com.mobile.orientui.pinnedrecyclerview.StickyHeadersDecoration
 import kotlinx.android.synthetic.main.ranking_group_layout.view.*
 
 /**
@@ -58,14 +60,21 @@ class RankingGroupView : FrameLayout {
         horizontalViewSynchronize.attach(recycler_view_left, recycler_view_right, scrollListener)
     }
 
-    fun setAdapter(leftAdapter: RecyclerView.Adapter<*>, rightAdapter: RecyclerView.Adapter<*>) {
+    fun setAdapter(leftAdapter: RankingBaseAdapter<*>, rightAdapter: RankingBaseAdapter<*>) {
+
         recycler_view_left.apply {
             adapter = leftAdapter
             layoutManager = LinearLayoutManager(context)
+            val decoration = StickyHeadersDecoration(leftAdapter)
+            addItemDecoration(decoration)
+            addOnItemTouchListener(HeaderTouchListener(this, decoration))
         }
         recycler_view_right.apply {
             adapter = rightAdapter
             layoutManager = LinearLayoutManager(context)
+            val decoration = StickyHeadersDecoration(rightAdapter)
+            addItemDecoration(decoration)
+            addOnItemTouchListener(HeaderTouchListener(this, decoration))
         }
     }
 

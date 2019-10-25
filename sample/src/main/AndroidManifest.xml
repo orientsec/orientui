@@ -22,6 +22,8 @@
         <activity android:name=".pinnedrecyclerview.PinnedRVActivity"/>
 
         <activity android:name=".rankinggroup.RankingGroupActivity"/>
+
+        <activity android:name=".theme.TestThemeActivity"/>
     </application>
 
 </manifest>
