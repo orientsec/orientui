@@ -24,6 +24,9 @@
         <activity android:name=".rankinggroup.RankingGroupActivity"/>
 
         <activity android:name=".theme.TestThemeActivity"/>
+
+        <activity android:name=".compositercv.CompositeRCVActivity"/>
+
     </application>
 
 </manifest>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ItemRightLLayout">
+        <attr name="firstItemWidth" format="dimension" />
+        <attr name="displayCount" format="integer" />
+    </declare-styleable>
+</resources>

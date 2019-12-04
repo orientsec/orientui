@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="96dp"
+        android:layout_height="22dp"
+        android:text="您暂无持仓股"
+        android:textColor="#FFA1A1A1"
+        android:textSize="16sp"
+        android:layout_gravity="center"/>
+
+</FrameLayout>

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.HorizontalScrollView
+import kotlin.math.abs
 
 /**
  * 控制右侧列表，横向和纵向的滑动冲突
@@ -33,7 +34,7 @@ class RankingHorizontalScrollView(context: Context, attrs: AttributeSet) : Horiz
                 onTouchEvent(ev)
             }
             MotionEvent.ACTION_MOVE -> {
-                intercept = Math.abs(x - lastX) - dp2px(context, CONST_FIVE) > Math.abs(y - lastY)
+                intercept = abs(x - lastX) - dp2px(context, CONST_FIVE) > abs(y - lastY)
             }
             MotionEvent.ACTION_UP -> {
                 intercept = false

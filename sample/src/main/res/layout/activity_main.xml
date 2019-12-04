@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -41,4 +42,14 @@
         android:onClick="btnClickEvent"
         tools:layout_editor_absoluteX="161dp"
         tools:layout_editor_absoluteY="304dp" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="行情组合列表"
+        android:onClick="btnClickEvent"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="304dp" />
+
 </LinearLayout>

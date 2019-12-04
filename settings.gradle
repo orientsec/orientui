@@ -1,1 +1,1 @@
-include ':sample', ':rankinggroup', ':pinned-recyclerview', ':loadlayout', ':winner-theme'
+include ':sample', ':rankinggroup', ':pinned-recyclerview', ':loadlayout', ':winner-theme', ':quota-composite-recyclerview'
