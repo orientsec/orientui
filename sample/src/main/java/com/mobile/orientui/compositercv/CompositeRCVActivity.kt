@@ -2,8 +2,11 @@ package com.mobile.orientui.compositercv
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mobile.orientui.R
 import com.mobile.orientui.divider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.composite_rcv_activity.*
@@ -32,6 +35,7 @@ class CompositeRCVActivity : AppCompatActivity() {
                     .size(1)
                     .color(Color.parseColor("#c4c4c4"))
                     .build())
+            addOnScrollListener(scrollListener)
         }
 
         val list = listOf(CompositeBaseItemModel(HEAD_ITEM_LEFT),
@@ -42,6 +46,15 @@ class CompositeRCVActivity : AppCompatActivity() {
         }
         list.add(CompositeBaseItemModel(BOTTOM_ITEM))
         mAdapter.submitList(list)
+    }
+
+    val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            val firstVisibleItem = (recyclerView.layoutManager as QuoteLayoutManager).getDisplayRowStart()
+            val lastVisibleItem = (recyclerView.layoutManager as QuoteLayoutManager).getDisplayRowEnd()
+            Log.v("scrollListener","firstVisibleItem:$firstVisibleItem   lastVisibleItem:$lastVisibleItem")
+        }
     }
 }
 

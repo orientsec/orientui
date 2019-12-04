@@ -182,7 +182,7 @@ class QuoteLayoutManager(build: Builder) : RecyclerView.LayoutManager() {
     /**
      * 获取要显示行开始的位置
      */
-    private fun getDisplayRowStart(): Int {
+    public fun getDisplayRowStart(): Int {
         var itemBottom = 0
         for (row in 0 until mLayoutState.mRowCount) {
             itemBottom += mLayoutState.mEachRowHeightList.get(row)
@@ -196,7 +196,7 @@ class QuoteLayoutManager(build: Builder) : RecyclerView.LayoutManager() {
     /**
      * 获取要显示行结束的位置
      */
-    private fun getDisplayRowEnd(): Int {
+    public fun getDisplayRowEnd(): Int {
         var itemTop = 0
         for (row in 0 until mLayoutState.mRowCount) {
             itemTop += mLayoutState.mEachRowHeightList.get(row)
@@ -210,7 +210,7 @@ class QuoteLayoutManager(build: Builder) : RecyclerView.LayoutManager() {
     /**
      * 获取显示列开始的位置
      */
-    private fun getDisplayColumnStart(): Int {
+    public fun getDisplayColumnStart(): Int {
         var columnPre = 0
         for (column in 0 until mLayoutState.mEachColumnWidthList.size()) {
             val itemRight = columnPre + mLayoutState.mEachColumnWidthList.get(column)
@@ -225,7 +225,7 @@ class QuoteLayoutManager(build: Builder) : RecyclerView.LayoutManager() {
     /**
      * 获取显示列结束的位置
      */
-    private fun getDisplayColumnEnd(): Int {
+    public fun getDisplayColumnEnd(): Int {
         var columnPre = 0
         for (column in 0 until mLayoutState.mEachColumnWidthList.size()) {
             val itemLeft = columnPre
