@@ -331,6 +331,14 @@ class QuoteLayoutManager(build: Builder) : RecyclerView.LayoutManager() {
     }
 
 
+    public fun findFirstVisibleItemPosition(): Int {
+        return getDisplayRowStart() * mLayoutState.mColumnCount + getDisplayColumnStart()
+    }
+
+    public fun findLastVisibleItemPosition(): Int {
+        return getDisplayRowEnd() * mLayoutState.mColumnCount + getDisplayColumnEnd()
+    }
+
     class LayoutState {
         /**
          * 总行数
@@ -380,7 +388,7 @@ class QuoteLayoutManager(build: Builder) : RecyclerView.LayoutManager() {
          */
         var mColumnCount = 0
 
-        fun setColumnCount(column: Int):Builder {
+        fun setColumnCount(column: Int): Builder {
             mColumnCount = column
             return this
         }

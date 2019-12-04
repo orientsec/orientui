@@ -3,5 +3,7 @@
     <declare-styleable name="ItemRightLLayout">
         <attr name="firstItemWidth" format="dimension" />
         <attr name="displayCount" format="integer" />
+        <attr name="textSize" format="float"/>
+        <attr name="textColor" format="color"/>
     </declare-styleable>
 </resources>

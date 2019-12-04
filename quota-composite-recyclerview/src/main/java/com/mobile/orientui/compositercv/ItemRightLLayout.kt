@@ -2,6 +2,7 @@ package com.mobile.orientui.compositercv
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
 import org.jetbrains.anko.dip
 
@@ -21,12 +23,23 @@ import org.jetbrains.anko.dip
  */
 class ItemRightLLayout : LinearLayout {
 
-    var firstItemWidth: Int = dip(120)
-        private set
-    var displayCount: Int = 3
-        private set
-    var itemWidth: Int = (getPhoneWidth() - firstItemWidth) / displayCount
-        private set
+    /**
+     * 首列的宽度
+     * 用于计算child的宽度
+     */
+    private var firstItemWidth: Int = dip(120)
+    /**
+     * child按照几等分显示
+     */
+    private var displayCount: Int = 3
+    /**
+     * child的宽度
+     */
+    private var itemWidth: Int = (getPhoneWidth() - firstItemWidth) / displayCount
+
+    private var mTextSize: Float = 0f
+
+    private var mTextColor: Int = 0
 
     var itemListTV = mutableListOf<TextView>()
 
@@ -43,8 +56,10 @@ class ItemRightLLayout : LinearLayout {
     private fun initAttrs(context: Context, attrs: AttributeSet?, defStyle: Int) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.ItemRightLLayout, defStyle, 0)
         firstItemWidth = a.getDimensionPixelSize(R.styleable.ItemRightLLayout_firstItemWidth, dip(120))
-        displayCount = a.getInt(R.styleable.ItemRightLLayout_displayCount, 1)
+        displayCount = a.getInt(R.styleable.ItemRightLLayout_displayCount, 3)
         itemWidth = (getPhoneWidth() - firstItemWidth) / displayCount
+        mTextSize = a.getFloat(R.styleable.ItemRightLLayout_textSize, 19f)
+        mTextColor = a.getColor(R.styleable.ItemRightLLayout_textColor, Color.parseColor("#777777"))
         a.recycle()
     }
 
@@ -63,8 +78,10 @@ class ItemRightLLayout : LinearLayout {
         setMeasuredDimension(measuredWidth, heightMeasureSpec)
     }
 
-    fun addHeadItem(index: Int, value: String) {
+    fun addHeadItem(index: Int, value: String = " ") {
         val tv = TextView(context).apply {
+            textSize = mTextSize
+            setTextColor(mTextColor)
             compoundDrawablePadding = dip(5f)
             gravity = Gravity.END or Gravity.CENTER_VERTICAL
             setPadding(0, 0, dip(15f), 0)
@@ -78,9 +95,9 @@ class ItemRightLLayout : LinearLayout {
     }
 
     @SuppressLint("InlinedApi")
-    fun addItemTextView(value: String, minTextSize: Int = 10, maxTextSize: Int = 19) {
+    fun addItemTextView(value: String = " ", minTextSize: Int = 10, maxTextSize: Int = 19) {
         val tv = AppCompatTextView(context).apply {
-            textSize = 19f
+            textSize = mTextSize
             gravity = Gravity.END or Gravity.CENTER_VERTICAL
             maxLines = 1
             text = value
